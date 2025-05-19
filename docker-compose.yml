@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  sync-api:
+    container_name: itonics-sync-api
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: itonics-sync-api:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      PSQL_HOST: db
+    depends_on:
+      - db
+
+  db:
+    container_name: postgres-auction-api
+    image: postgres:15.3
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=api
